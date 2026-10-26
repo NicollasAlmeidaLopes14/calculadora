@@ -1,12 +1,11 @@
 import { useState } from 'react'
 import Display from './components/Display.jsx'
 import Botao from './components/Botao.jsx'
-import { somar, subtrair } from './utils/operacoes.js'
+import { somar, subtrair, multiplicar, dividir } from './utils/operacoes.js'
 
 const NUMEROS = ['7', '8', '9', '4', '5', '6', '1', '2', '3', '0']
 
-// TODO: adicionar '*' e '/' quando as operações existirem
-const OPERADORES = ['+', '-']
+const OPERADORES = ['+', '-', 'x', '÷']
 
 function calcular(a, b, operador) {
   switch (operador) {
@@ -14,7 +13,10 @@ function calcular(a, b, operador) {
       return somar(a, b)
     case '-':
       return subtrair(a, b)
-    // TODO: tratar '*' e '/'
+    case 'x':
+      return multiplicar(a, b)
+    case '÷':
+      return dividir(a, b)
     default:
       return b
   }
@@ -36,9 +38,11 @@ export default function App() {
   }
 
   function escolherOperador(op) {
+    if (display === 'Erro') return
     const atual = Number(display)
     if (anterior !== null && operador && !novoNumero) {
-      const resultado = calcular(anterior, atual, operador)
+      const resultado = calcularResultado(atual)
+      if (resultado === null) return
       setDisplay(String(resultado))
       setAnterior(resultado)
     } else {
@@ -50,11 +54,24 @@ export default function App() {
 
   function igual() {
     if (anterior === null || !operador) return
-    const resultado = calcular(anterior, Number(display), operador)
+    const resultado = calcularResultado(Number(display))
+    if (resultado === null) return
     setDisplay(String(resultado))
     setAnterior(null)
     setOperador(null)
     setNovoNumero(true)
+  }
+
+  function calcularResultado(atual) {
+    try {
+      return calcular(anterior, atual, operador)
+    } catch {
+      setDisplay('Erro')
+      setAnterior(null)
+      setOperador(null)
+      setNovoNumero(true)
+      return null
+    }
   }
 
   function limpar() {
