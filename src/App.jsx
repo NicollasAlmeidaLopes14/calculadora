@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Display from './components/Display.jsx'
+import Historico from './components/Historico.jsx'
 import Botao from './components/Botao.jsx'
 import { somar, subtrair, multiplicar, dividir } from './utils/operacoes.js'
 
@@ -29,6 +30,7 @@ export default function App() {
   const [anterior, setAnterior] = useState(null)
   const [operador, setOperador] = useState(null)
   const [novoNumero, setNovoNumero] = useState(true)
+  const [historico, setHistorico] = useState([])
 
   function digitarNumero(n) {
     if (novoNumero) {
@@ -75,7 +77,12 @@ export default function App() {
 
   function calcularResultado(atual) {
     try {
-      return calcular(anterior, atual, operador)
+      const resultado = calcular(anterior, atual, operador)
+      setHistorico((registros) => [
+        { anterior, atual, operador, resultado },
+        ...registros,
+      ].slice(0, 3))
+      return resultado
     } catch {
       setDisplay('Erro')
       setAnterior(null)
@@ -92,11 +99,10 @@ export default function App() {
     setNovoNumero(true)
   }
 
-  // TODO: histórico de operações
-
   return (
     <div className="calculadora">
       <h1>Calculadora</h1>
+      <Historico registros={historico} />
       <Display valor={display} />
       <div className="teclado">
         <div className="numeros">
