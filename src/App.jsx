@@ -7,6 +7,7 @@ const NUMEROS = ['7', '8', '9', '4', '5', '6', '1', '2', '3', '0']
 
 const OPERADORES = ['+', '-', 'x', '÷']
 
+// Executa a operação indicada entre os dois números.
 function calcular(a, b, operador) {
   switch (operador) {
     case '+':
@@ -18,6 +19,7 @@ function calcular(a, b, operador) {
     case '÷':
       return dividir(a, b)
     default:
+      // Retorna o segundo número quando o operador não é reconhecido.
       return b
   }
 }

@@ -1,5 +1,7 @@
 # Orientações do repositório
 
+- Comente o código em português.
+
 ## Comandos e verificação
 - Use npm com `package-lock.json`: `npm ci` instala as versões fixadas das dependências.
 - `npm run dev` inicia o Vite; `npm run build` gera `dist/`; `npm run preview` serve essa versão compilada (execute o build primeiro).
